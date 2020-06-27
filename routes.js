@@ -52,13 +52,23 @@ router.delete('/:qID/answers/:aID', (req, res) => {
 /* POST /questions/:qID/answers/:aID/vote-up 
    POST /questions/:qID/answers/:aID/vote-down 
    Vote on a specific answer */
-router.post('/:qID/answers/:aID/vote-:dir', (req, res) => {
-    res.json({ 
-        response: 'You sent me a POST request to /vote',
-        questionID: req.params.qID,
-        answerID: req.params.aID,
-        vote: req.params.dir
-     });
+router.post('/:qID/answers/:aID/vote-:dir', 
+    (req, res, next) => {
+        if (req.params.dir.search(/^(up|down)$/) === -1) {
+            const err = new Error('Not Found');
+            err.status = 404;
+            next(err); 
+        } else {
+            next();
+        }
+    },
+    (req, res) => {
+        res.json({ 
+            response: 'You sent me a POST request to /vote',
+            questionID: req.params.qID,
+            answerID: req.params.aID,
+            vote: req.params.dir
+        });
 });
 
 module.exports = router; 
