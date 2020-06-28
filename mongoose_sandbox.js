@@ -56,7 +56,7 @@ db.once('open', () => {   // open event - emitted when the connection is ready t
         return this.model('Animal').find({ color: this.color }, callback);
     } 
 
-    // create a model which creates and saves our document objects 
+    // convert AnimalSchema into a model we can work with 
     // Animal is a collection in the MongoDB database  
     const Animal = mongoose.model('Animal', AnimalSchema); 
 
