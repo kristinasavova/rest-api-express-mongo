@@ -65,8 +65,7 @@ router.put('/:qID/answers/:aID', (req, res) => {
             if (answer) {
                 answer.update(req.body, err => {
                     if (err) next(err);
-                    res.setHeader('Location', '/');
-                    res.sendStatus(204);
+                    res.set('Location', '/').sendStatus(204);
                 });
             } else {
                 const err = new Error('Not Found');
@@ -92,8 +91,7 @@ router.delete('/:qID/answers/:aID', (req, res) => {
                     if (err) next(err);
                     question.save(err => {
                         if (err) next(err);
-                        res.setHeader('Location', '/');
-                        res.sendStatus(204);
+                        res.set('Location', '/').sendStatus(204);
                     });
                 });
             } else {

@@ -30,6 +30,19 @@ db.once('open', () => {   // open event - emitted when the connection is ready t
     console.log('Database connection is successful');
 });
 
+app.use((req, res, next) => {
+    /* Grant access to the resources from any domain - cross origin requests */
+    res.set('Access-Control-Allow-Origin', '*');
+    /* Tell the client which headers are permitted in their request */
+    res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    /* Grant preflight requests permission */
+    if (req.method === 'OPTIONS') {
+        res.set('Access-Control-Allow-Methods', 'PUT, POST, DELETE');
+        res.status(200).json({}); 
+    }
+    next();
+});
+
 app.use('/questions', routes);
 
 /* Catch 404 and forward to error handler */
