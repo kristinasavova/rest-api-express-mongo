@@ -63,9 +63,10 @@ router.put('/:qID/answers/:aID', (req, res) => {
             /* The id method takes an ID of a sub-doc and returns sub-doc with that matching ID */
             const answer = question.answers.id(req.params.aID); 
             if (answer) {
-                answer.update(req.body, (err, result) => {
+                answer.update(req.body, err => {
                     if (err) next(err);
-                    res.json(result);
+                    res.setHeader('Location', '/');
+                    res.sendStatus(204);
                 });
             } else {
                 const err = new Error('Not Found');
@@ -89,9 +90,10 @@ router.delete('/:qID/answers/:aID', (req, res) => {
             if (answer) {
                 answer.remove(err => {
                     if (err) next(err);
-                    question.save((err, result) => {
+                    question.save(err => {
                         if (err) next(err);
-                        res.status(204).json(result);
+                        res.setHeader('Location', '/');
+                        res.sendStatus(204);
                     });
                 });
             } else {

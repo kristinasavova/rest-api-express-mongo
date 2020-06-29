@@ -11,12 +11,12 @@ const { Schema } = mongoose;
  * @param {object} a 
  * @param {object} b 
  */
-const sortAnswers = (a, b) => {
+const sortAnswers = function(a, b) {
     /* If votes match, order by the updatedAt date - a number of ms that has elapsed since the
        midnight Thursday the 1st of January 1970 - more recent times are bigger in number than less recent  */
     if (a.votes === b.votes) { 
         // returns the difference in ms and orders the larger or later date first 
-        b.updatedAt - a.updatedAt;  
+        return b.updatedAt - a.updatedAt;  
     }
     return b.votes - a.votes; 
 }
@@ -65,6 +65,7 @@ const QuestionSchema = new Schema({
 QuestionSchema.pre('save', function(next) {
     // this refers to the docs to be saved 
     this.answers.sort(sortAnswers);
+    next();
 });
 
 const Question = mongoose.model('Question', QuestionSchema);
